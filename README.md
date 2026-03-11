@@ -281,12 +281,6 @@ a credible effect.
   main effects in the additive model, and the LASSO model should be
   preferred for combination comparisons.
 
-### Heterogeneity (τ)
-
-`tau` is the between-study standard deviation of true log-ORs. Values
-< 0.3 are generally considered small, 0.3–0.8 moderate, > 0.8 large (in
-the context of psychological interventions; Turner et al. 2015).
-
 ---
 
 ## Accessing raw MCMC samples
