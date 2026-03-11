@@ -1,0 +1,36 @@
+Package: bcnma
+Title: Bayesian Component Network Meta-Analysis with LASSO Interactions
+Version: 0.1.0
+Authors@R: c(
+    person("Yuki", "Furukawa",
+        email   = "furukawa.y.psy@gmail.com",
+        role    = c("aut", "cre")),
+    person("Orestis", "Efthimiou",
+        role    = "ths",
+        comment = "Conceptual guidance on Bayesian cNMA and SSVS modelling"))
+Description: Fits Bayesian random-effects component network meta-analysis (cNMA)
+    for binary outcomes using JAGS. Supports three interaction models: fully
+    additive (no interactions), spike-and-slab SSVS with equiprobable priors
+    (LASSO), and SSVS with informative priors for selected component pairs
+    (lasso_informative). Provides S3 methods for printing, forest plots, and
+    interaction summaries, plus a combination-comparison function that propagates
+    posterior uncertainty through both main effects and interaction terms.
+    The package was developed by packaging and generalising analysis scripts
+    originally written for the CBT-I Component NMA project (Furukawa et al.
+    2024, JAMA Psychiatry). Designed to feel familiar to users of the
+    netmeta/meta ecosystem.
+License: MIT + file LICENSE
+URL: https://github.com/ykfrkw/bcnma
+BugReports: https://github.com/ykfrkw/bcnma/issues
+Depends:
+    R (>= 4.1.0)
+Imports:
+    rjags,
+    MCMCvis
+Suggests:
+    ggplot2,
+    ggrepel,
+    knitr,
+    rmarkdown
+Encoding: UTF-8
+RoxygenNote: 7.3.2
