@@ -13,7 +13,7 @@
 # ---- print ----
 
 #' @export
-print.bcnma <- function(x, digits = 2, model = c("both", "additive", "lasso"), ...) {
+print.bcnma_bin <- function(x, digits = 2, model = c("both", "additive", "lasso"), ...) {
   model <- match.arg(model)
 
   cat("Bayesian Component NMA (bcnma)\n")
@@ -93,7 +93,7 @@ print.bcnma <- function(x, digits = 2, model = c("both", "additive", "lasso"), .
 # ---- summary ----
 
 #' @export
-summary.bcnma <- function(object, digits = 3, ...) {
+summary.bcnma_bin <- function(object, digits = 3, ...) {
   cat("=== Bayesian cNMA Summary ===\n\n")
 
   cat("Call:\n")
@@ -132,7 +132,7 @@ summary.bcnma <- function(object, digits = 3, ...) {
 #' @param ...    additional arguments (unused)
 #' @return ggplot object (invisible)
 #' @export
-forest.bcnma <- function(x,
+forest.bcnma_bin <- function(x,
                           model    = c("both", "additive", "lasso"),
                           ref_line = 1,
                           xlab     = "Odds Ratio vs. no component",
@@ -226,7 +226,7 @@ forest.bcnma <- function(x,
 compare_combinations <- function(x, ...) UseMethod("compare_combinations")
 
 #' @export
-compare_combinations.bcnma <- function(x,
+compare_combinations.bcnma_bin <- function(x,
                                         combo1,
                                         combo2       = character(0),
                                         model        = c("lasso", "additive"),
@@ -235,7 +235,7 @@ compare_combinations.bcnma <- function(x,
                                         ...) {
   model <- match.arg(model)
 
-  if (!inherits(x, "bcnma")) stop("'x' must be a bcnma object.")
+  if (!inherits(x, "bcnma_bin")) stop("'x' must be a bcnma_bin object.")
 
   comps <- x$components
   Nc    <- x$n_components
@@ -344,7 +344,7 @@ compare_combinations.bcnma <- function(x,
 plot_interactions <- function(x, top_n = 10, threshold = 0.5) {
   if (!requireNamespace("ggplot2", quietly = TRUE)) stop("Package 'ggplot2' is required.")
   if (is.null(x$interaction_effects)) {
-    stop("No interaction results. Run bcnma() with interactions = 'lasso' or 'lasso_informative'.")
+    stop("No interaction results. Run bcnma_bin() with interactions = 'lasso' or 'lasso_informative'.")
   }
 
   df <- summarise_interactions(x)

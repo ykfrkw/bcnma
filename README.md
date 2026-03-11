@@ -7,7 +7,7 @@ using JAGS. Two outcome types are supported:
 
 | Function | Outcome | Effect measure | Likelihood |
 |----------|---------|---------------|------------|
-| `bcnma()` | Binary | OR (odds ratio) | Binomial |
+| `bcnma_bin()` | Binary | OR (odds ratio) | Binomial |
 | `bcnma_cont()` | Continuous | SMD or MD | Normal (arm-level) |
 
 Both functions support three interaction models — additive, SSVS-LASSO
@@ -60,7 +60,7 @@ library(bcnma)
 library(dplyr)
 
 # Load the bundled CBTICNMA dataset (248 studies, 17 CBT-I components)
-dat_raw <- read.csv(system.file("extdata", "data_CBTICNMA.csv", package = "bcnma"))
+dat_raw <- read.csv(system.file("extdata", "data_CBTICNMA.csv", package = "bcnma_bin"))
 names(dat_raw)[1] <- "study"  # fix BOM character in first column
 
 dat <- dat_raw |>
@@ -93,7 +93,7 @@ plot_interactions(fit)
 ## Continuous outcomes: `bcnma_cont()`
 
 For continuous outcomes (e.g., sleep scale change scores, ISI, PSQI), use
-`bcnma_cont()`. The interface is identical to `bcnma()` except that `event`
+`bcnma_cont()`. The interface is identical to `bcnma_bin()` except that `event`
 is replaced by `mean`, `sd`, and `n`, and `sm` selects the effect measure.
 
 ```r
@@ -438,9 +438,9 @@ bcnma/
 ├── NAMESPACE
 ├── LICENSE
 ├── R/
-│   ├── bcnma-package.R   ← package documentation
+│   ├── bcnma_bin-package.R   ← package documentation
 │   ├── generics.R        ← forest() / compare_combinations() generics
-│   ├── bcnma.R           ← main bcnma() function (binary)
+│   ├── bcnma_bin.R           ← main bcnma_bin() function (binary)
 │   ├── bcnma_cont.R      ← bcnma_cont() function (continuous, SMD/MD)
 │   ├── helpers.R         ← binary data prep; place(), which.place(), all.interactions()
 │   ├── helpers_cont.R    ← continuous data prep (SMD standardisation)

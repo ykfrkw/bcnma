@@ -4,7 +4,7 @@
 # Contact: furukawa.y.psy@gmail.com
 #
 # File description:
-# Main bcnma() function — Bayesian component NMA with LASSO/SSVS interactions.
+# Main bcnma_bin() function — Bayesian component NMA with LASSO/SSVS interactions.
 # Interface is modelled after netmeta() / discomb().
 
 #' Bayesian Component Network Meta-Analysis with LASSO Interactions
@@ -60,7 +60,7 @@
 #' library(bcnma)
 #'
 #' # Load the bundled CBTICNMA example data
-#' dat <- read.csv(system.file("extdata", "data_CBTICNMA.csv", package = "bcnma"))
+#' dat <- read.csv(system.file("extdata", "data_CBTICNMA.csv", package = "bcnma_bin"))
 #'
 #' components <- c("se", "sd", "cr", "th", "cw", "sr", "sc", "re", "pi",
 #'                 "w",  "ns", "he", "tg", "ind", "gp", "ff", "ae")
@@ -85,7 +85,7 @@
 #' }
 #'
 #' @export
-bcnma <- function(data,
+bcnma_bin <- function(data,
                   studlab,
                   treat,
                   event,
@@ -145,7 +145,7 @@ bcnma <- function(data,
 
   # ---- Data preparation ----
   if (!quiet) message("Preparing data...")
-  prep <- .bcnma_prepare_data(data, studlab_col, treat_col, event_col, n_col,
+  prep <- .bcnma_bin_prepare_data(data, studlab_col, treat_col, event_col, n_col,
                                components, component_separator)
   Ns       <- prep$Ns
   Nc       <- prep$Nc
@@ -305,6 +305,6 @@ bcnma <- function(data,
         n.burnin = n.burnin, n.iter  = n.iter, n.thin  = n.thin
       )
     ),
-    class = "bcnma"
+    class = "bcnma_bin"
   )
 }

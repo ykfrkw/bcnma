@@ -8,7 +8,7 @@ library(bcnma)
 library(ggplot2)
 
 # ---- 1. Load data -----------------------------------------------------------
-dat_raw <- read.csv(system.file("extdata", "data_CBTICNMA.csv", package = "bcnma"))
+dat_raw <- read.csv(system.file("extdata", "data_CBTICNMA.csv", package = "bcnma_bin"))
 names(dat_raw)[1] <- "study"  # fix BOM character in first column name
 
 # Prepare arm-level data: one row per arm, aggregate duplicates if any

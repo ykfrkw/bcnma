@@ -21,7 +21,7 @@
 #' @param components  character vector of component abbreviations (order matters)
 #' @param component_separator character: separator used in treat column (default "+")
 #' @return list with JAGS data and metadata
-.bcnma_prepare_data <- function(data, studlab_col, treat_col, event_col, n_col,
+.bcnma_bin_prepare_data <- function(data, studlab_col, treat_col, event_col, n_col,
                                 components, component_separator = "+") {
   d <- data.frame(
     study = as.character(data[[studlab_col]]),
@@ -198,7 +198,7 @@ all.interactions <- function(combination, Nc, components = NULL) {
 #' @return data.frame sorted by |median_gamma| descending
 summarise_interactions <- function(x, threshold = 0.5, top_n = NULL) {
   if (is.null(x$interaction_inclusion_prob)) {
-    stop("No interaction results found. Run bcnma() with interactions = 'lasso' or 'lasso_informative'.")
+    stop("No interaction results found. Run bcnma_bin() with interactions = 'lasso' or 'lasso_informative'.")
   }
 
   Nc     <- x$n_components
