@@ -3,10 +3,16 @@
 **Bayesian Component Network Meta-Analysis with LASSO Interactions**
 
 `bcnma` fits Bayesian random-effects component network meta-analysis (cNMA)
-for binary outcomes using JAGS. It supports three interaction models —
-additive, SSVS-LASSO (equiprobable), and SSVS-LASSO (informative) — and
-provides `netmeta`-style output for users already familiar with the
-`meta`/`netmeta` ecosystem.
+using JAGS. Two outcome types are supported:
+
+| Function | Outcome | Effect measure | Likelihood |
+|----------|---------|---------------|------------|
+| `bcnma()` | Binary | OR (odds ratio) | Binomial |
+| `bcnma_cont()` | Continuous | SMD or MD | Normal (arm-level) |
+
+Both functions support three interaction models — additive, SSVS-LASSO
+(equiprobable), and SSVS-LASSO (informative) — and provide `netmeta`-style
+output.
 
 The package was developed by packaging and generalising analysis scripts
 originally written for the **CBT-I Component NMA** study:
@@ -84,7 +90,68 @@ plot_interactions(fit)
 
 ---
 
-## Input data format
+## Continuous outcomes: `bcnma_cont()`
+
+For continuous outcomes (e.g., sleep scale change scores, ISI, PSQI), use
+`bcnma_cont()`. The interface is identical to `bcnma()` except that `event`
+is replaced by `mean`, `sd`, and `n`, and `sm` selects the effect measure.
+
+```r
+library(bcnma)
+
+fit_cont <- bcnma_cont(
+  data         = dat,
+  studlab      = study,
+  treat        = treatment_component,
+  mean         = mean_change,   # arm mean (e.g. change from baseline)
+  sd           = sd_change,     # arm SD
+  n            = n,
+  components   = components,
+  sm           = "SMD",         # "SMD" (default) or "MD"
+  pooled_sd    = "within",      # pool SD across all arms (default)
+  interactions = "lasso",
+  seed         = 42
+)
+
+print(fit_cont)                 # SMD [95% CrI] per component
+forest(fit_cont)                # forest plot on SMD scale (ref line at 0)
+compare_combinations(fit_cont,
+  combo1 = c("cr", "th", "sr"),
+  combo2 = character(0))        # combination vs. no-component baseline
+```
+
+### Input data format (continuous)
+
+Long format, one row per arm per study:
+
+| study     | treatment_component | mean_change | sd_change | n  |
+|-----------|--------------------|-----------|-----------|----|
+| Smith2001 | se+sd+cr           | -7.2       | 4.1       | 50 |
+| Smith2001 | w                  | -2.1       | 3.8       | 50 |
+
+### Standardisation (SMD)
+
+When `sm = "SMD"` (default), each study's arm means are divided by the
+within-study pooled SD before fitting:
+
+```
+σ_pooled = sqrt( Σ(n_k - 1)·SD_k² / (Σn_k - K) )
+y_std[k] = mean[k] / σ_pooled
+```
+
+The estimated component effects `d[j]` are therefore on the **SMD scale**
+(comparable to Cohen's d / Hedges' g). Use `sm = "MD"` to work on the raw
+mean difference scale instead.
+
+### Heterogeneity prior for continuous outcomes
+
+The default `tau_prior = c(-1.0, 1/0.8^2)` is a weakly informative
+lognormal prior appropriate for SMD heterogeneity in psychological
+intervention trials. Adjust as needed for your outcome domain.
+
+---
+
+## Input data format (binary)
 
 Long format, **one row per arm per study**:
 
@@ -372,13 +439,15 @@ bcnma/
 ├── LICENSE
 ├── R/
 │   ├── bcnma-package.R   ← package documentation
-│   ├── generics.R        ← forest() generic
-│   ├── bcnma.R           ← main bcnma() function
-│   ├── helpers.R         ← data prep; place(), which.place(), all.interactions()
-│   ├── jags_models.R     ← dynamic JAGS model string builders (internal)
-│   └── methods.R         ← print, summary, forest, compare_combinations,
-│                            plot_interactions, summarise_interactions
+│   ├── generics.R        ← forest() / compare_combinations() generics
+│   ├── bcnma.R           ← main bcnma() function (binary)
+│   ├── bcnma_cont.R      ← bcnma_cont() function (continuous, SMD/MD)
+│   ├── helpers.R         ← binary data prep; place(), which.place(), all.interactions()
+│   ├── helpers_cont.R    ← continuous data prep (SMD standardisation)
+│   ├── jags_models.R     ← JAGS model string builders (binary + continuous)
+│   ├── methods.R         ← S3 methods for bcnma (binary)
+│   └── methods_cont.R    ← S3 methods for bcnma_cont (continuous)
 └── inst/extdata/
-    ├── data_CBTICNMA.csv       ← bundled example dataset
-    └── example_CBTICNMA.R     ← full worked example
+    ├── data_CBTICNMA.csv       ← bundled example dataset (binary)
+    └── example_CBTICNMA.R     ← full worked example (binary)
 ```

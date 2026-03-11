@@ -223,12 +223,16 @@ forest.bcnma <- function(x,
 #' compare_combinations(fit, combo1 = "sr", combo2 = character(0))
 #' }
 #' @export
-compare_combinations <- function(x,
-                                  combo1,
-                                  combo2       = character(0),
-                                  model        = c("lasso", "additive"),
-                                  exponentiate = TRUE,
-                                  probs        = c(0.025, 0.5, 0.975)) {
+compare_combinations <- function(x, ...) UseMethod("compare_combinations")
+
+#' @export
+compare_combinations.bcnma <- function(x,
+                                        combo1,
+                                        combo2       = character(0),
+                                        model        = c("lasso", "additive"),
+                                        exponentiate = TRUE,
+                                        probs        = c(0.025, 0.5, 0.975),
+                                        ...) {
   model <- match.arg(model)
 
   if (!inherits(x, "bcnma")) stop("'x' must be a bcnma object.")
