@@ -1,5 +1,19 @@
 # bcnma
 
+> [!IMPORTANT]
+> **bcnma has moved into [nmatools](https://github.com/ykfrkw/nmatools) (version 0.3.0 and later).**
+> This repository is no longer developed. All functions (`bcnma_bin()`, `bcnma_cont()`,
+> `compare_combinations()`, `forest()`, `plot_interactions()`, ...) keep the same names and
+> arguments in nmatools, so existing scripts work after replacing `library(bcnma)` with
+> `library(nmatools)`. nmatools also adds component values (doses) and arm-level effect
+> modifiers (e.g. provider proficiency, continuous or ordinal).
+>
+> ```r
+> remotes::install_github("ykfrkw/nmatools")
+> library(nmatools)
+> ?bcnma   # overview; see also docs/manual/17-bayesian-cnma.md
+> ```
+
 **Bayesian Component Network Meta-Analysis with LASSO Interactions**
 
 `bcnma` fits Bayesian random-effects component network meta-analysis (cNMA)
